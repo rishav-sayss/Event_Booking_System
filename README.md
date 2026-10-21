@@ -166,7 +166,7 @@ Add the following variables to `Backend/.env`:
 
 ```env
 ADMIN_EMAIL=admin@example.com
-ADMIN_PASSWORD=change_me_admin_password
+ADMIN_PASSWORD=Admin@1234
 ```
 
 - Use `admin@example.com` as the default admin email.
