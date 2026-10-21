@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { scroll-behavior: smooth; }
+  body { @apply bg-ink-950 text-slate-100 font-sans antialiased; }
+  ::selection { @apply bg-brand-500/30 text-white; }
+}
+
+@layer components {
+  .container-page { @apply mx-auto w-full max-w-7xl px-5 sm:px-8; }
+  .btn { @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400/60 disabled:cursor-not-allowed disabled:opacity-60; }
+  .btn-primary { @apply btn bg-brand-500 text-ink-950 hover:bg-brand-400 hover:shadow-glow active:scale-[0.98]; }
+  .btn-ghost { @apply btn border border-white/10 bg-white/5 text-slate-100 hover:border-white/20 hover:bg-white/10; }
+  .btn-outline { @apply btn border border-brand-500/40 text-brand-300 hover:bg-brand-500/10; }
+  .input { @apply w-full rounded-xl border border-white/10 bg-ink-900/60 px-4 py-3 text-sm text-slate-100 placeholder-slate-500 outline-none transition focus:border-brand-400/60 focus:ring-2 focus:ring-brand-400/20; }
+  .card { @apply rounded-2xl border border-white/10 bg-ink-900/60 backdrop-blur-sm; }
+  .chip { @apply inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium; }
+  .summitra-pill { @apply inline-flex items-center gap-4 rounded-full bg-white py-2 pl-6 pr-2 text-sm font-bold text-[#25113f] shadow-xl shadow-[#2b0d62]/20 transition duration-300 hover:-translate-y-1 hover:shadow-2xl; }
+  .summitra-pill-small { @apply gap-3 py-1.5 pl-5 text-xs; }
+  .summitra-pill-purple { @apply bg-[#7b28cc] text-white; }
+  .summitra-pill-icon { @apply grid h-11 w-11 place-items-center rounded-full bg-[#8f17d7] text-white transition duration-300 group-hover:rotate-[-45deg]; }
+  .summitra-person-card { @apply relative h-52 overflow-hidden rounded-[22px] bg-[#c66cff] shadow-2xl shadow-[#29075c]/30 sm:h-60; }
+  .summitra-person-card img { @apply h-full w-full object-cover object-top transition duration-700; }
+  .summitra-person-card:hover img { @apply scale-105; }
+  .event-map-marker { background: transparent; border: 0; }
+  .event-map-marker span { display: block; width: 24px; height: 24px; border: 4px solid #fff; border-radius: 999px; background: #8f17d7; box-shadow: 0 4px 12px rgba(0,0,0,.35); }
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+  .glass { background: rgba(15, 22, 35, 0.6); backdrop-filter: blur(12px); }
+}
+
+.summitra-orbit { position: absolute; border: 34px solid rgba(255,255,255,.1); border-radius: 999px; pointer-events: none; filter: blur(.2px); }
+.summitra-orbit-one { width: 980px; height: 410px; left: -270px; top: 280px; transform: rotate(18deg); }
+.summitra-orbit-two { width: 1000px; height: 330px; right: -400px; top: 70px; transform: rotate(-25deg); border-color: rgba(255,255,255,.08); }
+.summitra-orbit-three { width: 1200px; height: 410px; left: 15%; bottom: -230px; transform: rotate(-12deg); border-color: rgba(255,255,255,.08); }
+.summitra-orbit-four { width: 800px; height: 260px; left: 50%; top: 50%; transform: translate(-50%, -50%) rotate(-12deg); border-color: rgba(255,255,255,.12); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
