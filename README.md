@@ -47,15 +47,35 @@ project-root/
 - MySQL 8 or newer
 - No map key or billing account is required; venue maps use OpenStreetMap tiles
 
-## Database setup
+### Database Configuration (AlwaysData MySQL)
 
-Create the database and tables with the supplied SQL script:
+SeatSage uses a **MySQL database hosted on AlwaysData** for storing event information, user accounts, bookings, and admin data.
 
-```bash
-mysql -u root -p < Backend/database/event_booking.sql
+The backend connects to the hosted database using environment variables defined in `Backend/.env`.
+
+Example configuration:
+
+```env
+DB_HOST=your_alwaysdata_mysql_host
+DB_PORT=3306
+DB_USER=your_alwaysdata_username
+DB_PASSWORD=your_alwaysdata_password
+DB_NAME=your_alwaysdata_database_name
 ```
 
-The script creates `event_booking_db`, `admins`, `users`, `events`, and `bookings`. The `users` table stores registered customer accounts with bcrypt password hashes. The `events` table includes address details (`location`, `address`, `city`, `area`, `sector`), nullable `latitude` and `longitude`, event data, and seat counts. The `bookings` table contains `id`, `event_id`, `name`, `email`, `mobile`, `quantity`, `total_amount`, `booking_date`, and `status`.
+Replace these example values with the actual connection details available in your AlwaysData account. The exact variable names must match those used by the backend configuration.
+
+**Database setup and deployment:**
+
+1. Create or use your existing MySQL database in AlwaysData.
+2. Verify that the required tables exist: `admins`, `users`, `events`, and `bookings`.
+3. If the schema needs updating, apply the required SQL changes to the existing AlwaysData database after checking its current structure.
+4. Add the database credentials to the Render backend's Environment Variables settings.
+5. Deploy or restart the backend and verify that it connects successfully to AlwaysData.
+
+**Important:** The production backend should connect to the existing AlwaysData database. Do not create or import a separate database unnecessarily, and do not run the SQL setup script blindly against a database containing existing data.
+
+Keep database credentials private. Never expose them in frontend environment variables or commit them to GitHub.
 
 ## Backend installation
 
@@ -80,7 +100,7 @@ The default API address is `http://localhost:5000`.
 ```bash
 cd frontend
 npm install
-cp .env.example .env
+cp .env .env
 ```
 
 Set the API and Socket.IO addresses for the backend. Venue maps use OpenStreetMap and require no API key.
@@ -139,10 +159,27 @@ Customer passwords are hashed on the server. Booking endpoints require the custo
 
 The booking operation locks the event row, checks the current availability, inserts the booking, decreases `available_seats`, and commits all changes together. If there are not enough seats, the operation returns a conflict and no booking is created.
 
-### Admin
+### Admin Login and Configuration
+The application includes an admin login system with JWT authentication. The default admin credentials are configured through environment variables.
 
-- `POST /api/admin/login` — returns a JWT for valid admin credentials.
-- `GET /api/admin/stats` — dashboard metrics. Requires an admin Bearer token.
+Add the following variables to `Backend/.env`:
+
+```env
+ADMIN_EMAIL=admin@example.com
+ADMIN_PASSWORD=change_me_admin_password
+```
+
+- Use `admin@example.com` as the default admin email.
+- Use `change_me_admin_password` as the default admin password for initial configuration.
+- You can change the admin email and password at any time by updating these environment variables.
+- After changing the variables, restart or redeploy the backend for the changes to take effect.
+- The backend creates the configured admin account on its first successful database connection if the account does not already exist.
+
+**Security notes:**
+- Replace the default password with a strong, unique password before deployment.
+- Admin passwords should be stored as bcrypt hashes in the database.
+- Never commit `.env` files or real credentials to GitHub.
+- Configure the same environment variables in your hosting provider's dashboard, such as Render.
 
 ## Deployment
 
